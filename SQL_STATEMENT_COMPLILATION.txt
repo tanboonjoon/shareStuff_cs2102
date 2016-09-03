@@ -1,0 +1,13 @@
+////////CREATE DB SCHEMA///////////
+
+CREATE TABLE user(
+username VARCHAR(256) primary key,
+password VARCHAR(256) NOT NULL,
+email VARCHAR(256) NOT NULL, 
+is_admin boolean DEFAULT FALSE, 
+);
+
+
+
+
+////////END OF DB SCHEMA///////////
