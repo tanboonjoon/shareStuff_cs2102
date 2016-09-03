@@ -11,3 +11,17 @@ is_admin boolean DEFAULT FALSE,
 
 
 ////////END OF DB SCHEMA///////////
+
+
+/////////SQL STATEMENT/////////////
+Log in validation:
+
+
+
+
+
+
+
+
+
+///////END OF SQL STATEMENT////////

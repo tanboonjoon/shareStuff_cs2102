@@ -1,0 +1,10 @@
+$("u1.errors").html("")
+<% if @user.errors.any? %>
+<% @user.errors.full_messages.each do |msg| <%>
+<$("u1.errors").append($("<li />").html("<%= message.html_safe %>"))
+<% end %>
+
+<% else %>
+$(".user-index").html("<%= escape_javascript(render 'index' ) %> ")
+$('#User-model').modal("hide")
+<% end %>

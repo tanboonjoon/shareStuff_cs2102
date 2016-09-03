@@ -1,0 +1,9 @@
+<% @users.each do |user| %>
+<tr>
+	<td><%= user.username %></td>
+	<td><%= user.email %></td>
+	<td><%= user.is_admin %></td>
+	<td><%= link_to "Edit" "#", remote: true, class: "btn btn-default" %></td>
+	<td><%= link_to "Remove" "#", remote: true, class: "btn btn-danger" %></td>
+</tr>
+<% end %>
