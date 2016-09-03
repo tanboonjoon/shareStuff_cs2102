@@ -65,6 +65,7 @@ test:
   database: shareStuff_cs2102_test
   encoding: unicode
   pool: 5
+  host: localhost
   username: cs2102
   password: cs2102
 
