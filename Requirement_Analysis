@@ -1,0 +1,27 @@
+---------------------------------Problem---------------------------------------------
+The system allows people to borrow or lend stuff that they own (tools, appliances, furniture or books) either free or for a fee. Users advertise stuff available (what stuff, where to pick up and return, when it is available, etc.) or can browse the available stuff and bid to borrow it. Stuff owners or the system (your choice) chooses the successful bid.  Administrators can create, modify and delete all entries.  Please refer to www.snapgoods.com, www.neighborgoods.net or other stuff sharing sites for examples and data.
+
+Keywords:
+User can borrow / lend stuff they own
+Item can be for free or for a fee
+User can advertise stuff ( pick up/ return place, availability etc)
+User can bid to borrow item
+System choose winning bids
+Adminstrator can create/modify/delete entries
+--------------------------------------------------------------------------------------
+
+
+-----------------------------Relationship---------------------------------------------
+
+A User own (0,N) copy of a item
+
+A User can borrow (0, N) copy of item
+
+A user can bid (0, N) time for a item
+
+A item require (1, N) bid for it to be loaned
+
+A item may have (0, N) copies owned by different owner
+
+ER Diagram:
+https://drive.google.com/file/d/0B6ThVs7et4U3LURxdmhrY2cwLXM/view?usp=sharing
