@@ -2,6 +2,7 @@
 A cs2102(intro to database project) use bitnami to create a simple web app
 
 How to make bitnami work :(
+
 1)Copy all the file in htdoc(shareStuff) and replace the all files in your htdoc(bitnami) folder
 
 2)Open up dbconnect.php
