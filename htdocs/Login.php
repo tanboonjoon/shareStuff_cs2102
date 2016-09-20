@@ -11,7 +11,7 @@ if(isset($_POST['login'])) {
 	$email = pg_escape_string($_POST['email']);
 	$password = pg_escape_string($_POST['password']);
 
-	$query = " SELECT * FROM users WHERE email =  '{$email}' AND password =  '{$password}' ";
+	$query = " SELECT * FROM users WHERE email =  '{$email}' AND password_digest =  '{$password}' ";
 
 	$result = pg_query($conn, $query);
 
