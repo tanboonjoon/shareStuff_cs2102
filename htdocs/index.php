@@ -66,7 +66,7 @@ if(isset($_SESSION['usr_email'])) {
     <th>current Max Bid</th>
     <th> </th>
   </tr>";
-  if(!pg_fetch_row($result)) {
+  if(pg_num_rows(result) == 0) {
     echo "<tr><td align='center' colspan='7'> All your items are currently loaned out OR you did not lend any item at all </td></tr> ";
   }
 
@@ -106,7 +106,7 @@ if(isset($_SESSION['usr_email'])) {
     <th>item_name</th>
   </tr>";
 
-  if(!pg_fetch_row($result)) {
+  if(pg_num_rows(result) == 0) {
     echo "<tr><td align='center' colspan='3'> you are not bidding for any item currently  </td></tr> ";
   }
 
@@ -126,7 +126,7 @@ if(isset($_SESSION['usr_email'])) {
   pg_free_result($result);
 
 
-  
+
 
 }
 ?>
