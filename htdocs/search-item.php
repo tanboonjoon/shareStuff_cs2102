@@ -48,8 +48,8 @@ if(isset($_GET['formSubmit']))
     <th>ID</th>
     <th>Item</th>
     <th>Owner</th>
-    <th>Category</th>
     <th>Description</th>
+    <th>Category</th>
     <th>Pick up instruction</th>
     <th>Return instruction</th>
     <th>Availability</th>
