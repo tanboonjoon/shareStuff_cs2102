@@ -14,12 +14,13 @@ include_once 'dbconnect.php';
 
 <tr>
 <td style="background-color:#eeeeee;">
+<div class="container">
 <form>
-        Item Name <input type="text" name="ItemName" id="ItemName">
+        Item Name <input type="text" name="ItemName" id="ItemName"> <br>
 
-        Description <input type="text" name="Description" id="Description">
+        Description <input type="text" name="Description" id="Description"> <br>
 
-        <select name="Category"> <option value="Other">Select Category</option>
+        Category <select required name="Category"> <option value="">Select Category</option>
 
             <option value= "Tools & Gardening" > Tools & Gardening</option>
             <option value= "Sport & Outdoors" > Sport & Outdoors</option>
@@ -36,25 +37,25 @@ include_once 'dbconnect.php';
             <option value= "Other" > Other</option>
 
 
-        </select>
+        </select><br>
 
-        Return Instruction <input type="text" name="ReturnInstruction" id="ReturnInstruction">
+        Return Instruction <input type="text" name="ReturnInstruction" id="ReturnInstruction"> <br>
 
-        Pick Up Instruction <input type="text" name="PickUpInstruction" id="PickUpInstruction">
+        Pick Up Instruction <input type="text" name="PickUpInstruction" id="PickUpInstruction"> <br>
 
-        <input type="radio" name="BidType" id="BidType1" value="free">free
-        <input type="radio" name="BidType" id="BidType2" value="withfee">with fee
-
+        <input type="radio" name="BidType" id="BidType1" value="free" checked="">free 
+        <input type="radio" name="BidType" id="BidType2" value="require fee">with fee
+        <br>
         <input type="submit" name="formSubmit" value="Add" >
 </form>
-
+</div>
 <?php
 
 if(isset($_GET['formSubmit'])) 
 {
     $query = "INSERT INTO item(item_name, owner, description, category,return_instruction,pickup_instruction, availability, bid_type) VALUES 
              ('".$_GET['ItemName']."',
-              'tan@gmail.com',
+              '{$_SESSION['usr_email']}',
               '".$_GET['Description']."',
               '".$_GET['Category']."',
               '".$_GET['ReturnInstruction']."',
@@ -76,5 +77,8 @@ pg_close($dbconn);
 </td> </tr>
 </table>
 
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.min.js"></script>    
 </body>
 </html>

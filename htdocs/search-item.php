@@ -25,7 +25,7 @@
                         <option value= "Apparel & Accessories" > Apparel & Accessories</option>
                         <option value= "Kids & Baby" > Kids & Baby</option>
                         <option value= "Electronic" > Electronic</option>
-                        <option value= Movies, Music, Book & Games" > Movies, Music, Book & Games</option>
+                        <option value= "Movies, Music, Book & Games" > Movies, Music, Book & Games</option>
                         <option value= "Motor Vehicles" >Motor Vehicles </option>
                         <option value= "Arts and Crafts" >Arts and Crafts </option>
                         <option value= "Home & Appliances" > Home & Appliances</option>
@@ -37,7 +37,7 @@
                     </select>
 
                     <input type="radio" name="BidType" id="BidType1" value="free" checked>free
-                    <input type="radio" name="BidType" id="BidType2" value="paid">paid
+                    <input type="radio" name="BidType" id="BidType2" value="require fee">require fee
 
                     <input type="submit" name="formSubmit" value="Search" >
                 </form>
