@@ -38,7 +38,7 @@ bid_amount REAL CHECK(bid_amount >= 0),
 bidder VARCHAR(256) REFERENCES users(email),
 item_id INT ,
 owner VARCHAR(256)
-status VARCHAR(256) CHECK(status = 'pending' or 'status' or status = 'success',
+bid_status VARCHAR(256) CHECK(status = 'pending' or 'status' or status = 'success'),
 FOREIGN KEY(item_id, owner) REFERENCES ITEM(ID ,owner),
 PRIMARY KEY(bid_amount, item_ID, bidder))";
 pg_query($conn, $query) or die (pg_last_error());
