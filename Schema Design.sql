@@ -1,4 +1,4 @@
-CREATE TABLE user
+CREATE TABLE users
 (
 email VARCHAR(256) PRIMARY KEY,
 username VARCHAR(256) NOT NULL,
@@ -27,6 +27,7 @@ creation_time DATE,
 bid_amount REAL CHECK(bid_amount > 0.0),
 bidder VARCHAR(256) REFERENCES user(email),
 item_id INT REFERENCES item(ID),
+status VARCHAR(256) CHECK(status = 'pending' or status'failed' or status = 'success'),
 PRIMARY KEY(bid_amount, ID , bidder)
 )
 
