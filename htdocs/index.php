@@ -26,7 +26,7 @@ include_once 'dbconnect.php';
 
 </div>
 <div class="collapse navbar-collapse" id="navbar1">
-   <ul class="nav navbar-nav navbar-right">s
+   <ul class="nav navbar-nav navbar-right">
       <?php if (isset($_SESSION['usr_email'])) { ?>
       <li><p class="navbar-text">Signed in as <?php echo $_SESSION['usr_name']; ?> </p></li>
       <li><a href="logout.php">Log Out</a></li> <?php } else { ?>
