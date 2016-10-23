@@ -103,6 +103,7 @@
                                 <th>Pick up instruction</th>
                                 <th>Return instruction</th>
                                 <th>Bid type</th>
+                                <th></th>
                             </tr>";
 
                             if(pg_num_rows($result) == 0) {
@@ -111,14 +112,26 @@
                             while ($row = pg_fetch_row($result)){
                               echo "<tr>";
                               $arrlength = count($row);
+                              $itemId = $row[0];
                               for ($i = 0; $i < $arrlength; $i++) {
                                 if($i == 7) {
 
                                 }else {
                                     echo "<td>" . $row[$i] . "</td>";
+
                                 }
 
                             }
+                            $free = 'free';
+                            $fee = 'require fee';
+                            
+                            if (strcmp($row[8], $free) == 0)  {
+                                echo "<td> <a href=\"freeItemLoan.php?id=$itemId\">Borrow</a> </td>"; 
+                            } else {
+                                echo "<td> <a href=\"bidForItem.php?id=$itemId\">Borrow</a> </td>";
+                            }
+
+                            
                             echo "</tr>";
                         }
                         echo "</table>";

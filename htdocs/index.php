@@ -29,9 +29,9 @@ include_once 'dbconnect.php';
    <ul class="nav navbar-nav navbar-right">
     <?php if (isset($_SESSION['usr_email'])) { ?>
       <li><p class="navbar-text">Signed in as <?php echo $_SESSION['usr_name']; ?> </p></li>
+      <li><a href="logout.php">Log Out</a></li>
       <li><a href="search-item.php">Search Online Item Catalogue</a></li>
       <li><a href="additem.php">Add Items for Lending</a></li>
-      <li><a href="logout.php">Log Out</a></li>
       <?php } else { ?>
         <li><a href="login.php">Log In</a></li>
         <li><a href="signup.php">Sign Up</a></li>
