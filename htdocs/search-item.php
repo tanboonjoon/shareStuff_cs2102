@@ -78,17 +78,18 @@
                             <label class="radio-inline">
                                 <input type="radio" name="BidType" id="BidType2" value="require fee">require fee
                             </label>
-                            <input type="submit" name="formSubmit" value="Search" >
+                           lo <input type="submit" name="formSubmit" value="Search" >
                         </form>
                         <?php
 
                         if(isset($_GET['formSubmit'])) 
-                        {   
 
+                        {   
+                            $email = $_SESSION['usr_email'];
                             if(strcasecmp("All", $_GET['Category']) == 0) {
-                                $query =  "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND  bid_type='".$_GET['BidType']."' AND availability = true";
+                                $query =  "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND  bid_type='".$_GET['BidType']."' AND availability = true AND owner <> '{$email}'";
                             } else {
-                                $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND bid_type='".$_GET['BidType']."' AND availability = true ";
+                                $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND bid_type='".$_GET['BidType']."' AND availability = true AND owner <> '{$email}'";
                             }
 
                             echo "<b>Search result for your item <br><br>";

@@ -129,6 +129,41 @@ if(isset($_SESSION['usr_email'])) {
   pg_free_result($result);
 
 
+  $query = "SELECT l.borrowed_date, l.item_id , i.item_name , l.owner FROM loan l, item i  
+  WHERE l.item_id = i.ID AND l.borrower = '" . $_SESSION['usr_email'] . "' ";
+  echo "<b>Item that you are currently borrowing!<br></br>";
+  $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+
+  echo "<table border=\"1\" >
+  <col width=\"10%\">
+  <col width=\"10%\">
+  <col width=\"20%\">
+  <tr>
+    <th>borrowed_date</th>
+    <th>item_id</th>
+    <th>item_name</th>
+    <th>owner</th>
+  </tr>";
+  if(pg_num_rows($result) == 0) {
+    echo "<tr><td align='center' colspan='7'> You have return all borrowed item or have not borrowed any </td></tr> ";
+  }
+
+  while($row = pg_fetch_row($result)) {
+    $return = $row[0];
+    $id = $row[1];
+    $name = $row[2];
+    $owner = $row[3];
+
+    echo "<tr>";
+    echo "<td> '{$return}' </td>";
+    echo "<td> '{$id}'</td>";
+    echo "<td> '{$name}'</td>";
+    echo "<td> '{$owner}'</td>";
+    echo "</tr>";
+  }
+  echo "</table>";
+  pg_free_result($result);
+
 
 
 }

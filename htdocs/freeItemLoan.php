@@ -8,17 +8,17 @@ if(isset($_POST['borrow'])) {
 	$borrowerID = pg_escape_string($_POST['borrowerID']);
 	$itemID = pg_escape_string($_POST['itemID']);
 	$owner = pg_escape_string($_POST['owner']);
-	$timestamp = date('Y-md G:i:s');
+	$timestamp = pg_escape_string(date('Y-m-d'));
 	$id = (int) $_GET['id'];
+	$query = "INSERT INTO loan(borrowed_date, item_id, owner, borrower)
+	VALUES('$timestamp' , '{$id}', '$owner', '" . $_SESSION['usr_email'] . "')";
+	$result = pg_query($conn, $query) or die (pg_last_error());
 
-	$query = "INSERT INTO loan values({$timestamp} , {$timestamp} , {$id}, {$owner}, {$borrowerID})";
-	$result = pg_query($conn, $query);
 
-	if($row = pg_fetch_array($result)) {
-		header('Location: index.php');
-	} else {
-		echo  pg_result_error($result);
-	}
+	$query = "UPDATE item SET availability = false WHERE ID = '{$id}'";
+	pg_query($conn, $query) or die (pg_last_error());
+	header("Location: index.php");
+
 
 }
 
@@ -93,6 +93,7 @@ if(isset($_POST['borrow'])) {
 				<input type ='hidden' name ='owner' value = {$row[2]} >
 				<input type='submit' name='borrow' value='borrow' > </form>"; 
 			}
+
 
 
 			?>
