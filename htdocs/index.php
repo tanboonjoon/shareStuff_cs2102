@@ -47,12 +47,13 @@ include_once 'dbconnect.php';
 if(isset($_SESSION['usr_email'])) {
 
 
+
   $email = $_SESSION['usr_email'];
   $query = "SELECT i.ID, i.item_name, l.borrower, l.borrowed_date
             FROM item i, loan l
             WHERE l.owner = '{$email}'
             AND l.item_id = i.ID";       
-  echo "<b>Items currently on loan:<br></br>";
+  echo "<h1>Items currently on loan:</h1>";
   $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
 
   echo "<table border=\"1\">
@@ -82,47 +83,63 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> <a href=\"confirmReturn.php?id=$itemID\">Confirm Return</a> </td>";
       echo "</tr>";
     }
-    echo "</table><br>";
-    pg_free_result($result);
   }
+  echo "</table><br>";
+  pg_free_result($result);
 
-/*
-  $query = "SELECT i.ID, i.item_name, i.description, i.category, i.return_instruction, i.pickup_instruction, i.availability, i.bid_type, COUNT(i.ID), MAX(b.bid_amount)
-            FROM item i, bid b
-            WHERE i.owner = '{$email}'
-            AND i.ID = b.item_id
-            GROUP BY i.ID, i.item_name, i.description, i.category, i.return_instruction, i.pickup_instruction, i.availability, i.bid_type";
-  echo "<b>Your items:<br></br>";
-  $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+
+
+  $itemsWithBidQuery = "SELECT i.*, COUNT(i.ID), MAX(b.bid_amount)
+                        FROM item i, bid b
+                        WHERE i.owner = '{$email}'
+                        AND i.ID = b.item_id
+                        GROUP BY i.ID, i.item_name, i.owner, i.description, i.category, i.return_instruction, i.pickup_instruction, i.availability, i.bid_type";
+
+  $itemsWithoutBidQuery = "SELECT i1.*
+                           FROM item i1
+                           WHERE i1.owner = '{$email}'
+                           AND i1.id <> ALL(SELECT i2.ID
+                                            FROM item i2, bid b
+                                            WHERE i2.owner = '{$email}'
+                                            AND i2.ID = b.item_id
+                                            GROUP BY i2.ID)";
+  echo "<h1>Your items:</h1>";
+  $resultWithBid = pg_query($conn, $itemsWithBidQuery) or die("Query Failed: '{pg_last_error()}'");
+  $resultWithoutBid = pg_query($conn, $itemsWithoutBidQuery) or die("Query Failed: '{pg_last_error()}'");
 
   echo "<table border=\"1\" >
-          <col width=\"10%\">
+          <col width=\"5%\">
           <col width=\"15%\">
           <col width=\"10%\">
-          <col width=\"10%\">
-          <col width=\"10%\">
-          <col width=\"10%\">
           <col width=\"5%\">
+          <col width=\"5%\">
+          <col width=\"5%\">
+          <col width=\"5%\">
+          <col width=\"5%\">
+          <col width=\"10%\">
           <tr>
             <th>item</th>
             <th>description</th>
             <th>category</th>
             <th>pickup instruction</th>
             <th>return instruction</th>
+            <th>bid type</th>
             <th>no. of bidders</th>
             <th>current max bid</th>
             <th>ACTIONS</th>
           </tr>";
-  if(pg_num_rows($result) == 0) {
+  if(pg_num_rows($resultWithBid) == 0 && pg_num_rows($resultWithoutBid) == 0) {
     echo "<tr><td align='center' colspan='8'> You have yet to add any items for loaning </td></tr> ";
   } else {
-    while($row = pg_fetch_row($result)) {
+
+    while($row = pg_fetch_row($resultWithBid)) {
       $itemID = $row[0];
       $itemName = $row[1];
+      $owner = $row[2];
       $description = $row[3];
       $category = $row[4];
-      $pickup = $row[6];
       $return = $row[5];
+      $pickup = $row[6];
       $availability = $row[7];
       $bidType = $row[8];
       $bidderCount = $row[9];
@@ -133,28 +150,55 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> '{$category}'</td>";
       echo "<td> '{$pickup}'</td>";
       echo "<td> '{$return}'</td>";
+      echo "<td> '{$bidType}'</td>";
       echo "<td> '{$bidderCount}'</td>";
       echo "<td> '{$maxBid}'</td>";
       echo "<td> <a href=\"editItem.php?id=$itemID\">Edit</a>
-            <br> <a href=\"deleteItem.php?id=$itemID\">Delete</a>";
-      if ($bidderCount > 0) {
-        echo "<br> <a href=\"endBid.php?id=$itemID\">End Round</a>";
-      }
-      echo "</td>";
+            <br> <a href=\"deleteItem.php?id=$itemID\">Delete</a>
+            <br> <a href=\"endBid.php?id=$itemID\">End Round</a>
+            </td>";
       echo "</tr>";
-      echo "</table>";
-      pg_free_result($result);
     }
+
+    while($row = pg_fetch_row($resultWithoutBid)) {
+      $itemID = $row[0];
+      $itemName = $row[1];
+      $owner = $row[2];
+      $description = $row[3];
+      $category = $row[4];
+      $return = $row[5];
+      $pickup = $row[6];
+      $availability = $row[7];
+      $bidType = $row[8];
+      $bidderCount = 0;
+      $maxBid = 0;
+
+      echo "<td> '{$itemName}' </td>";
+      echo "<td> '{$description}'</td>";
+      echo "<td> '{$category}'</td>";
+      echo "<td> '{$pickup}'</td>";
+      echo "<td> '{$return}'</td>";
+      echo "<td> '{$bidType}'</td>";
+      echo "<td> '{$bidderCount}'</td>";
+      echo "<td> '{$maxBid}'</td>";
+      echo "<td> <a href=\"editItem.php?id=$itemID\">Edit</a>
+            <br> <a href=\"deleteItem.php?id=$itemID\">Delete</a>
+            </td>";
+      echo "</tr>";
+    }
+
   }
-*/
+  echo "</table><br>";
+  pg_free_result($resultWithBid);
+  pg_free_result($resultWithoutBid);
+
+
 
   $query = "SELECT i.item_name, i.ID, b.bid_amount, b.owner, b.status
             FROM item i, bid b
             WHERE b.item_id = i.ID
             AND b.bidder = '{$email}'";
-
-  echo "<p><b><br></br></p>";
-  echo "<p>Your bids:</p>";
+  echo "<h1>Your bids:</h1>";
   $result = pg_query($conn, $query) or die(pg_last_error());
 
   echo "<table border=\"1\" >
@@ -194,16 +238,16 @@ if(isset($_SESSION['usr_email'])) {
       echo "</tr>";
     }
   }
-  echo "</table>";
+  echo "</table><br>";
   pg_free_result($result);
+
 
 
   $query = "SELECT l.borrowed_date, i.item_name, i.owner, i.description, i.return_instruction, i.pickup_instruction
             FROM loan l, item i
             WHERE l.item_id = i.ID
             AND l.borrower = '" . $_SESSION['usr_email'] . "' ";
-  echo "<p><b><br></br></p>";
-  echo "<b>You are currently borrowing:<br></br>";
+  echo "<h1>You are currently borrowing:</h1>";
   $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
 
   echo "<table border=\"1\" >
@@ -244,6 +288,7 @@ if(isset($_SESSION['usr_email'])) {
   }
   echo "</table>";
   pg_free_result($result);
+
 
 
 }
