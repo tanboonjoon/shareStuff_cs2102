@@ -107,10 +107,11 @@ if(isset($_SESSION['usr_email'])) {
     <th>curerent bid</th>
     <th>item_id</th>
     <th>item_name</th>
+    <th>actions</th>
   </tr>";
 
   if(pg_num_rows($result) == 0) {
-    echo "<tr><td align='center' colspan='3'> you are not bidding for any item currently  </td></tr> ";
+    echo "<tr><td align='center' colspan='4'> you are not bidding for any item currently  </td></tr> ";
   }
 
   while($row = pg_fetch_row($result)) {
@@ -123,6 +124,10 @@ if(isset($_SESSION['usr_email'])) {
     echo "<td> '{$amount}' </td>";
     echo "<td> '{$itemID}'</td>";
     echo "<td> '{$itemName}'</td>";
+    echo "<td>
+          <a href=\"bidForItem.php?id=$itemID\">Change bid</a> </br>
+          <a href=\"deleteBidForItem.php?id=$itemID\">Remove</a>
+          </td>";
     echo "</tr>";
   }
   echo "</table>";

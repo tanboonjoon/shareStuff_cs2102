@@ -101,10 +101,10 @@ if(isset($_POST['bid'])) {
 						  WHERE item_id = '{$id}'
 						  AND bidder = '" . $_SESSION['usr_email'] . "'";
 				$result = pg_query($conn, $query);
-				if($bidRow = pg_fetch_array($result)) {
-					echo "Your current bid : {$bidRow[0]} <br>";
-				} else {
+				if(pg_num_rows($bidRow) == 0) {
 					echo "Your current bid : 0 <br>";
+				} else {
+					echo "Your current bid : {$bidRow[0]} <br>";
 				}
 
 				echo "<form control='form' method='post' name='bid' >
