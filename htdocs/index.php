@@ -46,7 +46,7 @@ include_once 'dbconnect.php';
 <?php
 if(isset($_SESSION['usr_email'])) { 
   $email = $_SESSION['usr_email'];
-  $query = "SELECT * FROM item WHERE owner = '{$email}' AND availability = true";
+  $query = "SELECT * FROM item WHERE owner = '{$email}' ";
 
 
   echo "<b>Item that you are currently trying to lend out!<br></br>";
@@ -66,12 +66,13 @@ if(isset($_SESSION['usr_email'])) {
     <th>description</th>
     <th>return_instruction</th>
     <th>pickup_instructionn</th>
-    <th>current Max Bid</th>
-    <th> </th>
+    <th>current MaxBid</th>
+    <th>Actions</th>
   </tr>";
   if(pg_num_rows($result) == 0) {
     echo "<tr><td align='center' colspan='7'> All your items are currently loaned out OR you did not lend any item at all </td></tr> ";
   }
+
 
   while($row = pg_fetch_row($result)) {
     $id = $row[0];
@@ -79,20 +80,35 @@ if(isset($_SESSION['usr_email'])) {
     $desc = $row[3];
     $pickup = $row[5];
     $return = $row[6];
+    $availability = $row[7];
 
-    echo "<tr>";
     echo "<td> '{$id}' </td>";
     echo "<td> '{$item_name}'</td>";
     echo "<td> '{$desc}'</td>";
     echo "<td> '{$pickup}'</td>";
     echo "<td> '{$return}'</td>";
-    echo "<td>   </td>";
+    if ($availability == 'f') {
+      echo "<td> NA </td>";
+      echo "<td> <a href=\"confirmReturn.php?id=$id\">Confirm Return</a> </td>";
+    } else {
+      $query2 = "SELECT MAX(bid_amount) FROM bid WHERE item_id = '{$id}' ";
+      $maxResult = pg_query($conn, $query2) or die (pg_last_error());
+      if ($maxRow = pg_fetch_row($maxResult)) {
+        echo "<td> '$maxRow[0]' </td> ";
+
+      } else {
+        echo "<td> 0 </td> ";
+      }
+
+      echo "<td> <a href=\"endBid.php?id=$arr\">End Bid</a> </td>";
+    }
     echo "</tr>";
+
   }
   echo "</table>";
   pg_free_result($result);
 
-  $query ="SELECT max(b.bid_amount), b.item_id, i.item_name FROM bid b, item i WHERE b.item_id = i.ID AND b.bidder = '{$email}' AND b.status = 'pending' GROUP BY b.item_id, i.item_name";
+   $query ="SELECT max(b.bid_amount), b.item_id, i.item_name FROM bid b, item i WHERE b.item_id = i.ID AND b.bidder = '{$email}' AND b.status = 'pending' GROUP BY b.item_id, i.item_name";
   echo "<p><b><br></br></p>";
   echo "<p>Item that you are currently trying to bid for !</p>";
   $result = pg_query($conn, $query) or die(pg_last_error());
