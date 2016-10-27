@@ -40,7 +40,7 @@ item_id INT ,
 owner VARCHAR(256),
 status VARCHAR(256) CHECK(status = 'pending' or status = 'failure' or status = 'success'),
 FOREIGN KEY(item_id, owner) REFERENCES ITEM(ID, owner),
-PRIMARY KEY(bid_amount, item_id, bidder))";
+PRIMARY KEY(item_id, bidder))";
 pg_query($conn, $query) or die (pg_last_error());
 
 $delete ="DROP TABLE IF EXISTS loan CASCADE";

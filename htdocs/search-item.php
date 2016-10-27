@@ -114,22 +114,30 @@
                               echo "<tr>";
                               $arrlength = count($row);
                               $itemId = $row[0];
-                              for ($i = 0; $i < $arrlength; $i++) {
-                                if($i == 7) {
+                                for ($i = 0; $i < $arrlength; $i++) {
+                                    if($i == 7) {
 
-                                }else {
+                                    }else {
                                     echo "<td>" . $row[$i] . "</td>";
 
+                                    }
                                 }
-
-                            }
                             $free = 'free';
                             $fee = 'require fee';
                             
                             if (strcmp($row[8], $free) == 0)  {
                                 echo "<td> <a href=\"freeItemLoan.php?id=$itemId\">Borrow</a> </td>"; 
                             } else {
-                                echo "<td> <a href=\"bidForItem.php?id=$itemId\">Bid</a> </td>";
+                                $query = "SELECT *
+                                          FROM bid
+                                          WHERE bidder = '" . $_SESSION['usr_email'] . "'";
+                                $bidResult = pg_query($conn, $query);
+                                if(pg_num_rows($bidResult) == 0) {
+                                    echo "<td> <a href=\"bidForItem.php?id=$itemId&new=1\">Bid</a> </td>";
+                                } else {
+                                    echo "<td> <a href=\"bidForItem.php?id=$itemId\">Change bid</a> </td>";
+                                }
+                                pg_free_result($bidResult);                             
                             }
 
                             

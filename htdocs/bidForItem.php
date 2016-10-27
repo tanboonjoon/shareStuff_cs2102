@@ -5,18 +5,23 @@ include_once 'dbconnect.php';
 if(isset($_POST['bid'])) {
 	$creationTime = pg_escape_string(date('Y-m-d'));
 	$bidAmount = (int) $_POST['bidAmount'];
-	$bidder = pg_escape_string($_POST['borrowerID']);
 	$itemID = (int) $_GET['id'];
 	$owner = pg_escape_string($_POST['owner']);
 	$status = pg_escape_string('pending');
 
-	$query = "INSERT INTO bid
-			  VALUES('$creationTime', 
-			  		 '{$bidAmount}',
-			  		 '" . $_SESSION['usr_email'] . "',
-			  		 '{$itemID}', 
-			  		 '$owner', 
-			  		 '$status')";
+	if($_GET['new'] == 1) {
+		$query = "INSERT INTO bid
+			  	  VALUES('$creationTime', 
+			  		 	 '{$bidAmount}',
+			  		 	 '" . $_SESSION['usr_email'] . "',
+			  		 	 '{$itemID}', 
+			  		 	 '$owner', 
+			  		 	 '$status')";
+	} else {
+		$query = "UPDATE bid
+				  SET bid_amount = $bidAmount
+				  WHERE bidder = '" . $_SESSION['usr_email'] . "'";
+	}
 	pg_query($conn, $query) or die (pg_last_error());
 	header("Location: index.php");
 }
@@ -67,24 +72,45 @@ if(isset($_POST['bid'])) {
 			<?php
 
 			$id = (int) $_GET['id'];
-			$query = "SELECT * FROM item i WHERE i.id = '{$id}' ";
+			$query = "SELECT * FROM item WHERE id = '{$id}' ";
 			$result = pg_query($conn, $query);
 
-			if($row = pg_fetch_array($result)) {				
-				echo "itemName : {$row[1]} <br>
-				Owner : {$row[2]} <br>
-				Descripition : {$row[3]} <br>
-				Category : {$row[4]} <br>
-				Return instruction : {$row[5]} <br>
-				Pickup instruction : {$row[6]} <br>
-				bid_type : {$row[8]} <br>";
+			if($itemRow = pg_fetch_array($result)) {				
+				echo "itemName : {$itemRow[1]} <br>
+				Owner : {$itemRow[2]} <br>
+				Descripition : {$itemRow[3]} <br>
+				Category : {$itemRow[4]} <br>
+				Return instruction : {$itemRow[5]} <br>
+				Pickup instruction : {$itemRow[6]} <br>
+				bid_type : {$itemRow[8]} <br>";
 
-				$borrowerEmail = $_SESSION['usr_email'];
+				$query = "SELECT COUNT(DISTINCT bidder), MAX(bid_amount)
+						  FROM bid
+						  WHERE item_id = '{$id}' ";
+				$result = pg_query($conn, $query);
+				if($countRow = pg_fetch_array($result)) {
+					echo "Number of bidders : {$countRow[0]} <br>
+						  Current highest bid : {$countRow[1]} <br>";
+				} else {
+					echo "Number of bidders : 0 <br>
+						  Current highest bid : 0 <br>";
+				}
+
+				$query = "SELECT bid_amount
+						  FROM bid
+						  WHERE item_id = '{$id}'
+						  AND bidder = '" . $_SESSION['usr_email'] . "'";
+				$result = pg_query($conn, $query);
+				if($bidRow = pg_fetch_array($result)) {
+					echo "Your current bid : {$bidRow[0]} <br>";
+				} else {
+					echo "Your current bid : 0 <br>";
+				}
 
 				echo "<form control='form' method='post' name='bid' >
-				<input type ='hidden' name ='owner' value = {$row[2]} >
+				<input type ='hidden' name ='owner' value = {$itemRow[2]} >
 				Bid Amount <input type='number' name='bidAmount' id='bidAmount' min='1' required class='form-control'>
-				<input type='submit' name='bid' value='bid' > </form>"; 
+				<input type='submit' name='bid' value='bid' > </form>";
 			}
 
 
