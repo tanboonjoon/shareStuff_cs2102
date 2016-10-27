@@ -129,7 +129,7 @@
                             if (strcmp($row[8], $free) == 0)  {
                                 echo "<td> <a href=\"freeItemLoan.php?id=$itemId\">Borrow</a> </td>"; 
                             } else {
-                                echo "<td> <a href=\"bidForItem.php?id=$itemId\">Borrow</a> </td>";
+                                echo "<td> <a href=\"bidForItem.php?id=$itemId\">Bid</a> </td>";
                             }
 
                             
