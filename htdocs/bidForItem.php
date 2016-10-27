@@ -17,8 +17,6 @@ if(isset($_POST['bid'])) {
 			  		 '{$itemID}', 
 			  		 '$owner', 
 			  		 '$status')";
-	$result = pg_query($conn, $query) or die (pg_last_error());
-
 	pg_query($conn, $query) or die (pg_last_error());
 	header("Location: index.php");
 }
