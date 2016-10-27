@@ -130,7 +130,8 @@
                             } else {
                                 $query = "SELECT *
                                           FROM bid
-                                          WHERE bidder = '" . $_SESSION['usr_email'] . "'";
+                                          WHERE bidder = '" . $_SESSION['usr_email'] . "'
+                                          AND item_id = '{$itemId}'";
                                 $bidResult = pg_query($conn, $query);
                                 if(pg_num_rows($bidResult) == 0) {
                                     echo "<td> <a href=\"bidForItem.php?id=$itemId&new=1\">Bid</a> </td>";

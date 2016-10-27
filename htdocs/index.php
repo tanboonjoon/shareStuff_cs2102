@@ -108,7 +108,11 @@ if(isset($_SESSION['usr_email'])) {
   echo "</table>";
   pg_free_result($result);
 
-   $query ="SELECT max(b.bid_amount), b.item_id, i.item_name FROM bid b, item i WHERE b.item_id = i.ID AND b.bidder = '{$email}' AND b.status = 'pending' GROUP BY b.item_id, i.item_name";
+   $query = "SELECT i.item_name, i.ID, b.bid_amount, b.owner, b.status
+             FROM item i, bid b
+             WHERE b.item_id = i.ID
+             AND b.bidder = '{$email}'";
+
   echo "<p><b><br></br></p>";
   echo "<p>Item that you are currently trying to bid for !</p>";
   $result = pg_query($conn, $query) or die(pg_last_error());
@@ -120,9 +124,10 @@ if(isset($_SESSION['usr_email'])) {
   <col width=\"30%\">
 
   <tr>
-    <th>curerent bid</th>
-    <th>item_id</th>
     <th>item_name</th>
+    <th>curerent bid</th>
+    <th>owner</th>
+    <th>status</th>
     <th>actions</th>
   </tr>";
 
@@ -131,19 +136,23 @@ if(isset($_SESSION['usr_email'])) {
   }
 
   while($row = pg_fetch_row($result)) {
-    $amount = $row[0];
+    $itemName = $row[0];
     $itemID = $row[1];
-    $itemName = $row[2];
+    $amount = $row[2];
+    $owner = $row[3];
+    $status = $row[4];
 
 
     echo "<tr>";
-    echo "<td> '{$amount}' </td>";
-    echo "<td> '{$itemID}'</td>";
     echo "<td> '{$itemName}'</td>";
-    echo "<td>
-          <a href=\"bidForItem.php?id=$itemID\">Change bid</a> </br>
-          <a href=\"deleteBidForItem.php?id=$itemID\">Remove</a>
-          </td>";
+    echo "<td> '{$amount}' </td>";
+    echo "<td> '{$owner}'</td>";
+    echo "<td> '{$status}'</td>";
+    echo "<td>";
+    if ($status != 'success') {
+      echo "<a href=\"bidForItem.php?id=$itemID\">Change bid</a> </br>";
+    }
+    echo "<a href=\"deleteBidForItem.php?id=$itemID\">Remove</a> </td>";
     echo "</tr>";
   }
   echo "</table>";

@@ -20,7 +20,8 @@ if(isset($_POST['bid'])) {
 	} else {
 		$query = "UPDATE bid
 				  SET bid_amount = $bidAmount
-				  WHERE bidder = '" . $_SESSION['usr_email'] . "'";
+				  WHERE bidder = '" . $_SESSION['usr_email'] . "'
+				  AND item_id = '{$itemID}'";
 	}
 	pg_query($conn, $query) or die (pg_last_error());
 	header("Location: index.php");
