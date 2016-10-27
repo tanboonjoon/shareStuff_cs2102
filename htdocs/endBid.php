@@ -4,8 +4,6 @@ include_once 'dbconnect.php';
 
 
 
-}
-
 
 ?>
 
@@ -48,6 +46,33 @@ include_once 'dbconnect.php';
 
 				</div>
 			</nav>
+
+			<?php
+			$id = (int) $_GET['id'];
+
+			$query = "SELECT MAX(bid_amount), bidder FROM bid WHERE item_id = '{$id}' GROUP BY bidder";
+			$result = pg_query($conn, $query);
+
+			while($row = pg_fetch_row($result)) {
+				$bidWinner = $row[1];
+				$date = date('Y-m-d');
+				$owner = $_SESSION['usr_email'];
+				$query = "INSERT INTO loan(borrowed_date, item_id, owner, borrower) 
+				VALUES('{$date}', '{$id}', '{$owner}', '{$bidWinner}')";
+				$loanResult = pg_query($conn, $query) or die (pg_last_error());
+
+				$query = "UPDATE item SET availability = false WHERE ID = '{$id}'";
+				pg_query($conn, $query) or die (pg_last_error());
+
+				$query = "DELETE FROM bid WHERE item_id = '{$id}'";
+				pg_query($conn, $query) or die (pg_last_error());
+
+				header("Location: index.php");
+
+				
+			}
+			header("Location: index.php");
+			?>
 
 
 			<span class="text-danger"><?php if (isset($failure)) { echo $failure;} ?></span>
