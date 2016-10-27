@@ -108,15 +108,16 @@ if(isset($_SESSION['usr_email'])) {
   $resultWithoutBid = pg_query($conn, $itemsWithoutBidQuery) or die("Query Failed: '{pg_last_error()}'");
 
   echo "<table border=\"1\" >
-          <col width=\"5%\">
-          <col width=\"15%\">
+          <col width=\"4%\">
           <col width=\"10%\">
+          <col width=\"6%\">
+          <col width=\"3%\">
+          <col width=\"3%\">
+          <col width=\"3%\">
+          <col width=\"1%\">
+          <col width=\"1%\">
+          <col width=\"1%\">
           <col width=\"5%\">
-          <col width=\"5%\">
-          <col width=\"5%\">
-          <col width=\"5%\">
-          <col width=\"5%\">
-          <col width=\"10%\">
           <tr>
             <th>item</th>
             <th>description</th>
@@ -124,12 +125,13 @@ if(isset($_SESSION['usr_email'])) {
             <th>pickup instruction</th>
             <th>return instruction</th>
             <th>bid type</th>
+            <th>available</th>
             <th>no. of bidders</th>
             <th>current max bid</th>
             <th>ACTIONS</th>
           </tr>";
   if(pg_num_rows($resultWithBid) == 0 && pg_num_rows($resultWithoutBid) == 0) {
-    echo "<tr><td align='center' colspan='8'> You have yet to add any items for loaning </td></tr> ";
+    echo "<tr><td align='center' colspan='10'> You have yet to add any items for loaning </td></tr> ";
   } else {
 
     while($row = pg_fetch_row($resultWithBid)) {
@@ -151,9 +153,10 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> '{$pickup}'</td>";
       echo "<td> '{$return}'</td>";
       echo "<td> '{$bidType}'</td>";
+      echo "<td> '{$availability}'</td>";
       echo "<td> '{$bidderCount}'</td>";
       echo "<td> '{$maxBid}'</td>";
-      echo "<td> <a href=\"editItem.php?id=$itemID\">Edit</a>
+      echo "<td> <a href=\"addItem.php?id=$itemID&edit=1\">Edit</a>
             <br> <a href=\"deleteItem.php?id=$itemID\">Delete</a>
             <br> <a href=\"endBid.php?id=$itemID\">End Round</a>
             </td>";
@@ -179,9 +182,10 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> '{$pickup}'</td>";
       echo "<td> '{$return}'</td>";
       echo "<td> '{$bidType}'</td>";
+      echo "<td> '{$availability}'</td>";
       echo "<td> '{$bidderCount}'</td>";
       echo "<td> '{$maxBid}'</td>";
-      echo "<td> <a href=\"editItem.php?id=$itemID\">Edit</a>
+      echo "<td> <a href=\"addItem.php?id=$itemID&edit=1\">Edit</a>
             <br> <a href=\"deleteItem.php?id=$itemID\">Delete</a>
             </td>";
       echo "</tr>";

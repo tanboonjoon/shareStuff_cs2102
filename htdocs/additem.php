@@ -87,6 +87,12 @@
             <input type="radio" name="BidType" id="BidType1" value="free" checked="">free 
             <input type="radio" name="BidType" id="BidType2" value="require fee">with fee
             <br>
+            <?php
+              $id = (int) $_GET['id'];
+              $edit = (int) $_GET['edit'];
+              echo "<input type ='hidden' name ='id' value = {$id} >";
+              echo "<input type ='hidden' name ='edit' value = {$edit} >";
+            ?>
             <input type="submit" name="formSubmit" value="Add" >
           </form>
         </div>
@@ -94,18 +100,20 @@
     </div>
     <?php
 
-    if(isset($_GET['formSubmit'])) 
-    {
-      $query = "INSERT INTO item(item_name, owner, description, category,return_instruction,pickup_instruction, availability, bid_type) VALUES 
-      ('".$_GET['ItemName']."',
-      '{$_SESSION['usr_email']}',
-      '".$_GET['Description']."',
-      '".$_GET['Category']."',
-      '".$_GET['ReturnInstruction']."',
-      '".$_GET['PickUpInstruction']."',
-      true,
-      '".$_GET['BidType']."')";
-
+    if(isset($_GET['formSubmit'])) {
+      $edit = (int) $_GET['edit'];
+      if($edit == 1) {
+        $itemID = (int) $_GET['id'];
+        $query = "UPDATE item
+                 SET item_name = '".$_GET['ItemName']."', description = '".$_GET['Description']."', category = '".$_GET['Category']."',
+                     return_instruction = '".$_GET['ReturnInstruction']."', pickup_instruction = '".$_GET['PickUpInstruction']."',
+                     bid_type = '".$_GET['BidType']."'
+                 WHERE ID = '{$itemID}'";
+      } else {
+        $query = "INSERT INTO item(item_name, owner, description, category,return_instruction,pickup_instruction, availability, bid_type)
+                  VALUES ('".$_GET['ItemName']."', '{$_SESSION['usr_email']}', '".$_GET['Description']."', '".$_GET['Category']."',
+                          '".$_GET['ReturnInstruction']."', '".$_GET['PickUpInstruction']."', true, '".$_GET['BidType']."')";
+      }
       echo "<b>SQL:   </b>".$query."<br><br>";
       pg_query($query) or die('Query failed: ' . pg_last_error());
     }
