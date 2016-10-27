@@ -63,21 +63,130 @@ pg_query($conn, $query) or die (pg_last_error());
 $query = "INSERT INTO users VALUES('tan@gmail.com', 'tan', 'tan', false)";
 pg_query($conn, $query) or die (pg_last_error());
 
-$query = "INSERT INTO users VALUES('richguy@gmail.com', 'richguy', 'richguy', false)";
+$query = "INSERT INTO users VALUES('inaba@gmail.com', 'inaba', 'inaba', false)";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO users VALUES('fong@gmail.com', 'fong', 'fong', false)";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO users VALUES('goh@gmail.com', 'goh', 'goh', false)";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO users VALUES('yu@gmail.com', 'yu', 'yu', false)";
 pg_query($conn, $query) or die (pg_last_error());
 
 
-$query = "INSERT INTO item(item_name, owner, description, category,return_instruction,pickup_instruction, availability, bid_type) VALUES ('handphone', 'tan@gmail.com', 'sony z2', 'Electronic', 'call me ', 'call me', true, 'free')";
+
+//Sample User's Items
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('handphone', 'tan@gmail.com', 'Sony Z2', 'Electronic', 'Call/Text', 'Call/Text', true, 'require fee')";
 pg_query($conn, $query) or die (pg_last_error());
 
-$query = "INSERT INTO item(item_name, owner, description, category, return_instruction,pickup_instruction, availability, bid_type) VALUES ('novel', 'tan@gmail.com', 'it a book', 'Movies, Music, Book & Games', 'call me ',    'call me', true, 'require fee')";
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('novel', 'tan@gmail.com', 'The wonderful tales of the pigs and cows in my backyard', 'Movies, Music, Book & Games', 'Meet at Jurong MRT', 'Meet at Jurong MRT', true, 'free')";
 pg_query($conn, $query) or die (pg_last_error());
 
-$query = "INSERT INTO item(item_name, owner, description, category, return_instruction,pickup_instruction, availability, bid_type) VALUES ('mercz', 'tan@gmail.com', 'CARRRRR', 'Motor Vehiclesc', 'call me ', 'call me', true,	'require fee')";
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('bicycle', 'tan@gmail.com', 'Mountain bike', 'Sport & Outdoors', 'Call/Text', 'Meet at Jurong MRT', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('cs2102 textbook', 'tan@gmail.com', 'Databse textbook', 'Office & Education', 'Call/Text', 'Meet at Jurong MRT', true, 'free')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('baseball glove', 'tan@gmail.com', 'Bought in middle school but never used it', 'Sport & Outdoor', 'Meet at Clementi Mall', 'Call/Text', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('electric guitar', 'tan@gmail.com', 'Gibson (Black), never touched it, well maybe a few strums...BUT STILL NEW', 'Movies, Music, Book & Games', 'Call/Text', 'Call/Text', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('guitar combo amplifier', 'tan@gmail.com', 'Mustang, never touched it along with the guitar, IN PERFECT CONDITION', 'Movies, Music, Book & Games', 'Call/Text', 'Call/Text', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('guitar tool kit', 'tan@gmail.com', '...never broke any guitars so there was no opportunity to use it, IN PERFECT CONDITION', 'Tools & Gardening', 'Call/Text', 'Call/Text', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('tricycle', 'tan@gmail.com', 'You want to ride it, pay for it', 'Sport & Outdoor', 'Call/Text', 'Call/Text', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('cs1231 textbook', 'tan@gmail.com', 'Discrete structure textbook', 'Office & Education', 'Call/Text', 'Call/Text', true, 'free')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('mercedes benz', 'tan@gmail.com', 'Cheap and negotiable rental rate.', 'Motor Vehicles', 'Call/Text', 'Call/Text', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+
+//Extra's Items
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('jamming studio', 'inaba@gmail.com', 'Want to hold a live? Rate is cheap and negotiable', 'Spaces & Venues', 'Call/Text', 'Call/Text', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('paint brush set', 'inaba@gmail.com', 'For art lessons', 'Sport & Outdoors', 'Meet at Commonwealth MRT', 'Meet at Commonwealth MRT', true, 'free')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('helicopter', 'inaba@gmail.com', 'The one that flies and people ride on', 'Motor Vehicles', 'Call/Text', 'Call/Text', true, 'free')";
 pg_query($conn, $query) or die (pg_last_error());
 
 
 
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('ma1101r textbook', 'fong@gmail.com', 'Linear algebra textbook', 'Arts and Crafts', 'Meet at Bukit Batok MRT', 'Meet at Bukit Batok MRT', true, 'free')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('st2334 textbook', 'fong@gmail.com', 'Probability & statistics textbook', 'Office & Education', 'Meet at Bukit Batok MRT', 'Meet at Bukit Batok MRT', true, 'free')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('tablet', 'fong@gmail.com', 'iPad', 'Electronic', 'Call/Text', 'Meet at Bukit Batok MRT', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('laptop', 'fong@gmail.com', 'Toshiba, works fine', 'Electronic', 'Call/Text', 'Meet at Bukit Batok MRT', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('keyboard', 'fong@gmail.com', 'Razer, gaming keyboard', 'Electronic', 'Call/Text', 'Meet at Bukit Batok MRT', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+
+
+
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('air fryer', 'goh@gmail.com', 'Take good care of it!', 'Home & Appliances', 'Call/Text', 'Meet at Chua Chu Kang MRT', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('oven', 'goh@gmail.com', 'It is not mine', 'Home & Appliances', 'Call/Text', 'Meet at Chua Chu Kang MRT', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('fry pan', 'goh@gmail.com', 'Belongs to my mum', 'Home & Appliances', 'Call/Text', 'Meet at Chua Chu Kang MRT', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('hocket stick', 'goh@gmail.com', 'My prized stick', 'Sport & Outdoors', 'Call/Text', 'Meet at Chua Chu Kang MRT', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
+
+
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('party hat', 'yu@gmail.com', 'You can have it for good', 'Parties & Events', 'Call/Text', 'Call/Text', true, 'free')";
+pg_query($conn, $query) or die (pg_last_error());
+
+$query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, availability, bid_type)
+		  VALUES ('santa costume', 'yu@gmail.com', 'Surprise your kids!', 'Parties & Events', 'Call/Text', 'Call/Text', true, 'require fee')";
+pg_query($conn, $query) or die (pg_last_error());
 
 
 
