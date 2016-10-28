@@ -87,9 +87,9 @@
                         {   
                             $email = $_SESSION['usr_email'];
                             if(strcasecmp("All", $_GET['Category']) == 0) {
-                                $query =  "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND  bid_type='".$_GET['BidType']."' AND availability = true AND owner <> '{$email}'";
+                                $query =  "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND  bid_type='".$_GET['BidType']."' AND status = 'ongoing' AND owner <> '{$email}'";
                             } else {
-                                $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND bid_type='".$_GET['BidType']."' AND availability = true AND owner <> '{$email}'";
+                                $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND bid_type='".$_GET['BidType']."' AND status = 'ongoing' AND owner <> '{$email}'";
                             }
 
                             echo "<b>Search result for your item <br><br>";
@@ -130,8 +130,7 @@
                             } else {
                                 $query = "SELECT *
                                           FROM bid
-                                          WHERE bidder = '" . $_SESSION['usr_email'] . "'
-                                          AND item_id = '{$itemId}'";
+                                          WHERE bidder = '" . $_SESSION['usr_email'] . "'";
                                 $bidResult = pg_query($conn, $query);
                                 if(pg_num_rows($bidResult) == 0) {
                                     echo "<td> <a href=\"bidForItem.php?id=$itemId&new=1\">Bid</a> </td>";
