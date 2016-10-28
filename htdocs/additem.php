@@ -105,14 +105,14 @@
       if($edit == 1) {
         $itemID = (int) $_GET['id'];
         $query = "UPDATE item
-                 SET item_name = '".$_GET['ItemName']."', description = '".$_GET['Description']."', category = '".$_GET['Category']."',
-                     return_instruction = '".$_GET['ReturnInstruction']."', pickup_instruction = '".$_GET['PickUpInstruction']."',
-                     bid_type = '".$_GET['BidType']."'
-                 WHERE ID = '{$itemID}'";
+                  SET item_name = '".$_GET['ItemName']."', description = '".$_GET['Description']."', category = '".$_GET['Category']."',
+                      return_instruction = '".$_GET['ReturnInstruction']."', pickup_instruction = '".$_GET['PickUpInstruction']."',
+                      bid_type = '".$_GET['BidType']."'
+                  WHERE ID = '{$itemID}'";
       } else {
-        $query = "INSERT INTO item(item_name, owner, description, category,return_instruction,pickup_instruction, availability, bid_type)
+        $query = "INSERT INTO item(item_name, owner, description, category,return_instruction,pickup_instruction, status, bid_type)
                   VALUES ('".$_GET['ItemName']."', '{$_SESSION['usr_email']}', '".$_GET['Description']."', '".$_GET['Category']."',
-                          '".$_GET['ReturnInstruction']."', '".$_GET['PickUpInstruction']."', true, '".$_GET['BidType']."')";
+                          '".$_GET['ReturnInstruction']."', '".$_GET['PickUpInstruction']."', 'ongoing', '".$_GET['BidType']."')";
       }
       echo "<b>SQL:   </b>".$query."<br><br>";
       pg_query($query) or die('Query failed: ' . pg_last_error());
