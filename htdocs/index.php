@@ -290,7 +290,7 @@ if(isset($_SESSION['usr_email'])) {
       echo "</tr>";
     }
   }
-  echo "</table>";
+  echo "</table><br>";
   pg_free_result($result);
 
 
