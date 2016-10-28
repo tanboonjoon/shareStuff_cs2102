@@ -9,7 +9,33 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
   } else {
     header("Location: login.php");
   }
+
+
 }
+
+if(isset($_POST['adduser'])) {
+
+  $email = pg_escape_string($_POST['email']);
+  $name = pg_escape_string( $_POST['name']);
+  $password = pg_escape_string($_POST['password']);
+  $check =  $_POST['isadmin'];
+
+  if ($check == 'true') {
+    $isadmin = true;
+  } else {
+    $isadmin = false;
+  }
+
+  $query = "INSERT INTO users VALUES('{$email}', '{$name}', '{$password}', '$isadmin')";
+  $result = pg_query($conn, $query);
+
+  if(!$result) {
+    $failure = "Email already exist :(";
+  } else {
+    $success = "Account created! <a href='adminIndex.php'>go back to index page</a>";
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +67,7 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
       <li><a href="logout.php">Log Out</a></li>
       <li><a href="adminAddUser.php">Add User</a></li>
       <li><a href="adminAddItem.php">Add Item </a></li>
-       <li><a href="adminAddLoan.php">Add Loan </a></li>
+      <li><a href="adminAddLoan.php">Add Loan </a></li>
       <?php } else { ?>
         <li><a href="login.php">Log In</a></li>
         <li><a href="signup.php">Sign Up</a></li>
@@ -52,13 +78,24 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
   </div>
 </nav>
 
-<?php
+<form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="signup">
 
-echo "you are adding a user";
-?>
+  <label for="name">Email</label>
+  <input type="text" name="email" required value="<?php echo $email; ?>" class="form-control"/>
+  <label for="name">Name</label>
+  <input type="text" name="name" required value="<?php echo $name; ?>" class="form-control"/>
+  <label for="password">Password</label>
+  <input type="password" name="password" required value ="<?php echo $password; ?>" class="form-control"/>
+  <label for="password">isAdmin</label> <br>
+  <input type="radio" name= "isadmin" value ="true">True <br>
+  <input type="radio" name= "isadmin" value ="false" checked="checked">False <br>
+  <input type="submit" name="adduser" value="Add User" class ="btn btn-primary"/>
 
 
-
+</form>
+<span class="text-success"><?php if(isset($success)) { echo $success;} ?></span>
+<span class="text-danger"><?php if(isset($failure)) { echo $failure;} ?></span>
+<a href="adminIndex.php">Go Back to homepage </a>
 
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.min.js"></script>
