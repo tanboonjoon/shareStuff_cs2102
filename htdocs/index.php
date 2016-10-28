@@ -1,6 +1,10 @@
 <?php
 session_start();
 include_once 'dbconnect.php';
+
+if(isset($_SESSION['is_admin']) != "") {
+  header("Location: adminIndex.php");
+}
 ?>
 
 <!DOCTYPE html>
