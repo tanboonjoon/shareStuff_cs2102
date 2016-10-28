@@ -10,13 +10,14 @@ if(isset($_POST['borrow'])) {
 	$owner = pg_escape_string($_POST['owner']);
 	$timestamp = pg_escape_string(date('Y-m-d'));
 	$id = (int) $_GET['id'];
+
+	$query = "UPDATE item SET status = 'over' WHERE ID = '{$id}'";
+	pg_query($conn, $query) or die (pg_last_error());
 	$query = "INSERT INTO loan(borrowed_date, item_id, owner, borrower)
 	VALUES('$timestamp' , '{$id}', '$owner', '" . $_SESSION['usr_email'] . "')";
 	$result = pg_query($conn, $query) or die (pg_last_error());
 
 
-	$query = "UPDATE item SET availability = false WHERE ID = '{$id}'";
-	pg_query($conn, $query) or die (pg_last_error());
 	header("Location: index.php");
 
 

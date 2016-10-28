@@ -89,7 +89,6 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> '{$username}'</td>";
       echo "<td> '{$password}'</td>";
       echo "<td> '{$is_admin}'</td>";
-      //edit the link!!
       echo "<td> <a href=\"adminEdit.php?id=$email&edit=0\">Edit</a>
       <br> <a href=\"adminDeleteUser.php?id=$email\">Delete</a>
     </td>";
@@ -150,7 +149,6 @@ if(pg_num_rows($itemResult) == 0) {
     echo "<td> '{$return}'</td>";
     echo "<td> '{$bidType}'</td>";
     echo "<td> '{$status}'</td>";
-      //CHANGE LINK!
     echo "<td> <a href=\"adminEdit.php?id=$itemID&edit=1\">Edit</a>
     <br> <a href=\"adminDeleteItem.php?id=$itemID\">Delete</a>
   </td>";
@@ -202,8 +200,6 @@ if(pg_num_rows($result) == 0) {
     echo "<td> '{$item_id}'</td>";
     echo "<td> '{$owner}'</td>";
     echo "<td> '{$status}'</td>";
-
-    //EDITTT
     echo "<td> <a href=\"adminEdit.php?id=$item_id&owner=$owner&bidder=$bidder&edit=2\">Edit</a>
     <br> <a href=\"adminDeleteBid.php?id=$item_id&owner=$owner&bidder=$bidder\">Delete</a>
   </td>";
@@ -241,9 +237,8 @@ if (pg_num_rows($result) == 0) {
     $return_date = $row[0];
     $borrowed_date = $row[1];
     $item_id = $row[2];
-    $description = $row[3];
-    $owner = $row[4];
-    $borrower = $row[5];
+    $owner = $row[3];
+    $borrower = $row[4];
 
     echo "<tr>";
     echo "<td> '{$return_date}'</td>";

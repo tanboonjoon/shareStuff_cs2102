@@ -56,7 +56,8 @@ if(isset($_SESSION['usr_email'])) {
   $query = "SELECT i.ID, i.item_name, l.borrower, l.borrowed_date
             FROM item i, loan l
             WHERE l.owner = '{$email}'
-            AND l.item_id = i.ID";       
+            AND l.item_id = i.ID
+            AND l.return_date IS NULL";       
   echo "<h1>Items currently on loan:</h1>";
   $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
 
@@ -97,7 +98,7 @@ if(isset($_SESSION['usr_email'])) {
                         FROM item i, bid b
                         WHERE i.owner = '{$email}'
                         AND i.ID = b.item_id
-                        GROUP BY i.ID, i.item_name, i.owner, i.description, i.category, i.return_instruction, i.pickup_instruction, i.availability, i.bid_type";
+                        GROUP BY i.ID, i.item_name, i.owner, i.description, i.category, i.return_instruction, i.pickup_instruction, i.status, i.bid_type";
 
   $itemsWithoutBidQuery = "SELECT i1.*
                            FROM item i1
@@ -108,8 +109,8 @@ if(isset($_SESSION['usr_email'])) {
                                             AND i2.ID = b.item_id
                                             GROUP BY i2.ID)";
   echo "<h1>Your items:</h1>";
-  $resultWithBid = pg_query($conn, $itemsWithBidQuery) or die("Query Failed: '{pg_last_error()}'");
-  $resultWithoutBid = pg_query($conn, $itemsWithoutBidQuery) or die("Query Failed: '{pg_last_error()}'");
+  $resultWithBid = pg_query($conn, $itemsWithBidQuery) or die(pg_last_error());
+  $resultWithoutBid = pg_query($conn, $itemsWithoutBidQuery) or die(pg_last_error());
 
   echo "<table border=\"1\" >
           <col width=\"4%\">
@@ -129,7 +130,7 @@ if(isset($_SESSION['usr_email'])) {
             <th>pickup instruction</th>
             <th>return instruction</th>
             <th>bid type</th>
-            <th>available</th>
+            <th>status</th>
             <th>no. of bidders</th>
             <th>current max bid</th>
             <th>ACTIONS</th>
@@ -146,7 +147,7 @@ if(isset($_SESSION['usr_email'])) {
       $category = $row[4];
       $return = $row[5];
       $pickup = $row[6];
-      $availability = $row[7];
+      $status = $row[7];
       $bidType = $row[8];
       $bidderCount = $row[9];
       $maxBid = $row[10];
@@ -157,7 +158,7 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> '{$pickup}'</td>";
       echo "<td> '{$return}'</td>";
       echo "<td> '{$bidType}'</td>";
-      echo "<td> '{$availability}'</td>";
+      echo "<td> '{$status}'</td>";
       echo "<td> '{$bidderCount}'</td>";
       echo "<td> '{$maxBid}'</td>";
       echo "<td> <a href=\"addItem.php?id=$itemID&edit=1\">Edit</a>
@@ -175,7 +176,7 @@ if(isset($_SESSION['usr_email'])) {
       $category = $row[4];
       $return = $row[5];
       $pickup = $row[6];
-      $availability = $row[7];
+      $status = $row[7];
       $bidType = $row[8];
       $bidderCount = 0;
       $maxBid = 0;
@@ -186,7 +187,7 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> '{$pickup}'</td>";
       echo "<td> '{$return}'</td>";
       echo "<td> '{$bidType}'</td>";
-      echo "<td> '{$availability}'</td>";
+      echo "<td> '{$status}'</td>";
       echo "<td> '{$bidderCount}'</td>";
       echo "<td> '{$maxBid}'</td>";
       echo "<td> <a href=\"addItem.php?id=$itemID&edit=1\">Edit</a>

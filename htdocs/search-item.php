@@ -87,9 +87,9 @@
                         {   
                             $email = $_SESSION['usr_email'];
                             if(strcasecmp("All", $_GET['Category']) == 0) {
-                                $query =  "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND  bid_type='".$_GET['BidType']."' AND availability = true AND owner <> '{$email}'";
+                                $query =  "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND  bid_type='".$_GET['BidType']."' AND status = 'ongoing' AND owner <> '{$email}'";
                             } else {
-                                $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND bid_type='".$_GET['BidType']."' AND availability = true AND owner <> '{$email}'";
+                                $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND bid_type='".$_GET['BidType']."' AND status = 'ongoing' AND owner <> '{$email}'";
                             }
 
                             echo "<b>Search result for your item <br><br>";
