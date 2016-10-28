@@ -1,5 +1,8 @@
 <?php
 session_start();
+if(isset($_SESSION['is_admin']) != "") {
+	header("Location: adminIndex.php");
+}
 if(isset($_SESSION['usr_email']) != "") {
 	header("Location: index.php");
 }
@@ -11,21 +14,24 @@ if(isset($_POST['login'])) {
 	$email = pg_escape_string($_POST['email']);
 	$password = pg_escape_string($_POST['password']);
 
-	$query = " SELECT * FROM users WHERE email =  '{$email}' AND password_digest =  '{$password}' ";
+	$query = " SELECT email, usersname, is_admin FROM users WHERE email =  '$email' AND password_digest =  '$password' ";
 
 	$result = pg_query($conn, $query);
 
-	if($row = pg_fetch_array($result)) {
+	if($row = pg_fetch_row($result)) {
 		$_SESSION['usr_email'] = $row[0];
 		$_SESSION['usr_name'] = $row[1];
+		$login = $row[2];
 
-		$login = $row[4];
-		if($login = true) {
+		if($login == 't') {
 			$_SESSION['is_admin'] = true;
-		} 
-		header("Location: index.php");
+			header("Location: adminIndex.php");
+		} else {
+			header("Location: index.php");
+		}
+
 	} else {
-		$failure = "Incorrect email or password";
+		$failure = "Incorrect email or password ";
 	}
 }
 
