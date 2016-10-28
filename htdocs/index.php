@@ -97,15 +97,18 @@ if(isset($_SESSION['usr_email'])) {
   $itemsWithBidQuery = "SELECT i.*, COUNT(i.ID), MAX(b.bid_amount)
                         FROM item i, bid b
                         WHERE i.owner = '{$email}'
+                        AND i.status = 'ongoing'
                         AND i.ID = b.item_id
                         GROUP BY i.ID, i.item_name, i.owner, i.description, i.category, i.return_instruction, i.pickup_instruction, i.status, i.bid_type";
 
   $itemsWithoutBidQuery = "SELECT i1.*
                            FROM item i1
                            WHERE i1.owner = '{$email}'
+                           AND i1.status = 'ongoing'
                            AND i1.id <> ALL(SELECT i2.ID
                                             FROM item i2, bid b
                                             WHERE i2.owner = '{$email}'
+                                            AND i2.status = 'ongoing'
                                             AND i2.ID = b.item_id
                                             GROUP BY i2.ID)";
   echo "<h1>Your items:</h1>";
@@ -121,7 +124,6 @@ if(isset($_SESSION['usr_email'])) {
           <col width=\"3%\">
           <col width=\"1%\">
           <col width=\"1%\">
-          <col width=\"1%\">
           <col width=\"5%\">
           <tr>
             <th>item</th>
@@ -130,7 +132,6 @@ if(isset($_SESSION['usr_email'])) {
             <th>pickup instruction</th>
             <th>return instruction</th>
             <th>bid type</th>
-            <th>status</th>
             <th>no. of bidders</th>
             <th>current max bid</th>
             <th>ACTIONS</th>
@@ -158,7 +159,6 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> '{$pickup}'</td>";
       echo "<td> '{$return}'</td>";
       echo "<td> '{$bidType}'</td>";
-      echo "<td> '{$status}'</td>";
       echo "<td> '{$bidderCount}'</td>";
       echo "<td> '{$maxBid}'</td>";
       echo "<td> <a href=\"addItem.php?id=$itemID&edit=1\">Edit</a>
@@ -187,7 +187,6 @@ if(isset($_SESSION['usr_email'])) {
       echo "<td> '{$pickup}'</td>";
       echo "<td> '{$return}'</td>";
       echo "<td> '{$bidType}'</td>";
-      echo "<td> '{$status}'</td>";
       echo "<td> '{$bidderCount}'</td>";
       echo "<td> '{$maxBid}'</td>";
       echo "<td> <a href=\"addItem.php?id=$itemID&edit=1\">Edit</a>

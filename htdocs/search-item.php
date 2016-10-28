@@ -78,7 +78,7 @@
                             <label class="radio-inline">
                                 <input type="radio" name="BidType" id="BidType2" value="require fee">require fee
                             </label>
-                           lo <input type="submit" name="formSubmit" value="Search" >
+                            <input type="submit" name="formSubmit" value="Search" >
                         </form>
                         <?php
 

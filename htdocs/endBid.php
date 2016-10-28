@@ -8,6 +8,7 @@ $query = "SELECT MAX(bid_amount)
 		  WHERE item_id = '{$itemID}'
 		  AND status = 'pending'";
 $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+echo "<h1>First</h1>";
 $row = pg_fetch_row($result);
 $winningBid = $row[0];
 pg_free_result($result);
@@ -29,12 +30,14 @@ pg_free_result($result);
 
 
 
+
 $query = "UPDATE bid
 		  SET status = 'failure'
 		  WHERE item_id = '{$itemID}'
 		  AND status = 'pending'
 		  AND bidder <> '{$bidWinner}'";
 pg_query($conn, $query) or die (pg_last_error());
+echo "<h1>First</h1>";
 
 
 
@@ -44,6 +47,15 @@ $query = "UPDATE bid
 		  AND status = 'pending'
 		  AND bidder = '{$bidWinner}'";
 pg_query($conn, $query) or die (pg_last_error());
+echo "<h1>First</h1>";
+
+
+
+$query = "UPDATE item
+		  SET status = 'over'
+		  WHERE ID = '{$itemID}'";
+pg_query($conn, $query) or die (pg_last_error());
+echo "<h1>First</h1>";
 
 
 
@@ -52,6 +64,7 @@ $owner = $_SESSION['usr_email'];
 $query = "INSERT INTO loan(borrowed_date, item_id, owner, borrower)
 		  VALUES('{$borrowedTime}', '{$itemID}', '{$owner}','{$bidWinner}')";
 pg_query($conn, $query) or die (pg_last_error());
+echo "<h1>First</h1>";
 
 header("Location: index.php");
 ?>
