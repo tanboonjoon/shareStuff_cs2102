@@ -17,7 +17,7 @@ pg_query($conn, $delete) or die (pg_last_error());
 $query = "CREATE TABLE item(
 ID SERIAL NOT NULL,
 item_name VARCHAR(256) NOT NULL,
-owner VARCHAR(256) REFERENCES users(email),
+owner VARCHAR(256) REFERENCES users(email) ON DELETE CASCADE ON UPDATE CASCADE,
 description VARCHAR(256),
 category VARCHAR(256),
 return_instruction VARCHAR(256),
@@ -35,11 +35,11 @@ pg_query($conn, $delete) or die (pg_last_error());
 $query = "CREATE TABLE bid(
 creation_time DATE,
 bid_amount REAL CHECK(bid_amount >= 0),
-bidder VARCHAR(256) REFERENCES users(email),
-item_id INT  ,
+bidder VARCHAR(256) REFERENCES users(email) ON DELETE CASCADE ON UPDATE CASCADE,
+item_id INT ,
 owner VARCHAR(256) ,
 status VARCHAR(256) CHECK(status = 'pending' or status = 'failure' or status = 'success'),
-FOREIGN KEY(item_id, owner) REFERENCES item(ID, owner) ON DELETE CASCADE,
+FOREIGN KEY(item_id, owner) REFERENCES item(ID, owner) ON DELETE CASCADE ON UPDATE CASCADE,
 PRIMARY KEY(item_id, owner, bidder))";
 pg_query($conn, $query) or die (pg_last_error());
 
@@ -51,8 +51,8 @@ return_date DATE CHECK(return_date >= borrowed_date),
 borrowed_date DATE,
 item_id INT,
 owner VARCHAR(256),
-borrower VARCHAR(256) REFERENCES users(email),
-FOREIGN KEY(item_id, owner) REFERENCES item(ID, owner) ON DELETE CASCADE,
+borrower VARCHAR(256) REFERENCES users(email) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY(item_id, owner) REFERENCES item(ID, owner) ON DELETE CASCADE ON UPDATE CASCADE,
 PRIMARY KEY(item_id, owner, borrower))";
 pg_query($conn, $query) or die (pg_last_error());
 

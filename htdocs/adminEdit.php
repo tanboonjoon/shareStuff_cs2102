@@ -10,6 +10,21 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
     header("Location: login.php");
   }
 }
+
+if(isset($_POST['users'])) {
+  $userID = $_POST['id'];
+  $email = $_POST['email'];
+  $name = $_POST['name'];
+  $password = $_POST['password'];
+  $isAdmin = $_POST['isAdmin'];
+
+  $query = "UPDATE users
+            SET email = '{$email}', usersname = '{$name}', password_digest = '{$password}', is_admin = '{$isAdmin}'
+            WHERE email = '{$userID}'";
+  pg_query($conn, $query) or die (pg_last_error());
+  header("Location: adminIndex.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -57,13 +72,25 @@ $edit = (int) $_GET['edit'];
 
 if ($edit == 0) {
 
-echo "you are editing user";
+  $id = $_GET['id'];
+  $query = "SELECT * FROM users WHERE email = '{$id}' ";
+  $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+
+  if($row = pg_fetch_array($result)) {        
+    echo "<form control='form' method='post' name='users' >";
+    echo "<input type ='hidden' name ='id' value = '{$id}' >";
+    echo "Email <input type='text' name='email' value='{$row[0]}' class='form-control'/>";
+    echo "Name <input type='text' name='name' value='{$row[1]}' class='form-control'/>";
+    echo "<label for='password'>Password</label>";
+    echo "<input type='text' name='password' value='{$row[2]}' class='form-control'/>";
+    echo "Is Admin <input type='text' name='isAdmin' value='{$row[3]}' class='form-control'/>";
+    echo "<input type='submit' name='users' value='Edit' > </form>";
+  }
+  pg_free_result($result);
 
 }else if ($edit == 1) {
 
 echo "you are editing item";
-
-
 }else if ($edit == 2) {
 
 echo "you are editing bid";
