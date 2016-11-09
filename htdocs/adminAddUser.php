@@ -18,13 +18,7 @@ if(isset($_POST['adduser'])) {
   $email = pg_escape_string($_POST['email']);
   $name = pg_escape_string( $_POST['name']);
   $password = pg_escape_string($_POST['password']);
-  $check =  $_POST['isadmin'];
-
-  if ($check == 'true') {
-    $isadmin = true;
-  } else {
-    $isadmin = false;
-  }
+  $isadmin =  $_POST['isadmin'];
 
   $query = "INSERT INTO users VALUES('{$email}', '{$name}', '{$password}', '$isadmin')";
   $result = pg_query($conn, $query);
@@ -88,9 +82,10 @@ if(isset($_POST['adduser'])) {
   <input type="text" name="name" required value="<?php echo $name; ?>" class="form-control"/>
   <label for="password">Password</label>
   <input type="password" name="password" required value ="<?php echo $password; ?>" class="form-control"/>
-  <label for="password">isAdmin</label> <br>
-  <input type="radio" name= "isadmin" value ="true">True <br>
-  <input type="radio" name= "isadmin" value ="false" checked="checked">False <br>
+
+  isAdmin <select required name='isadmin'> <option value='false'>False</option>";
+  <option value= 'true' > True</option>
+  </select> <br>
   <input type="submit" name="adduser" value="Add User" class ="btn btn-primary"/>
 
 
