@@ -159,11 +159,33 @@ if ($edit == 0) {
     echo "Item Name <input type='text' name='item_name' value='{$row[1]}' class='form-control'/>";
     echo "<input type ='hidden' name ='owner' value = '{$owner}' >";
     echo "Description <input type='text' name='description' value='{$row[3]}' class='form-control'/>";
-    echo "Category <input type='text' name='category' value='{$row[4]}' class='form-control'/>";
+
+    echo "Category <select required name='category'> <option value='{$row[4]}'>Select Category</option>";
+    echo "<option value= 'Tools & Gardening' > Tools & Gardening</option>
+          <option value= 'Sport & Outdoors' > Sport & Outdoors</option>
+          <option value= 'Parties & Events' > Parties & Events</option>
+          <option value= 'Apparel & Accessories' > Apparel & Accessories</option>
+          <option value= 'Kids & Baby' > Kids & Baby</option>
+          <option value= 'Electronic' > Electronic</option>
+          <option value= 'Movies, Music, Book & Games' > Movies, Music, Book & Games</option>
+          <option value= 'Motor Vehicles' >Motor Vehicles </option>
+          <option value= 'Arts and Crafts' >Arts and Crafts </option>
+          <option value= 'Home & Appliances' > Home & Appliances</option>
+          <option value= 'Office & Education' > Office & Education</option>
+          <option value= 'Spaces & Venues' > Spaces & Venues</option>
+          <option value= 'Other' > Other</option> </select> <br>";
+
     echo "Return Instruction <input type='text' name='return_instruction' value='{$row[5]}' class='form-control'/>";
     echo "Pick Up instruction <input type='text' name='pickup_instruction' value='{$row[6]}' class='form-control'/>";
-    echo "Status <input type='text' name='status' value='{$row[7]}' class='form-control'/>";
-    echo "Bid Type <input type='text' name='bid_type' value='{$row[8]}' class='form-control'/>";
+
+    echo "Status <select required name='status'> <option value='{$row[7]}'>Select Status</option>";
+    echo "<option value= 'ongoing' > Ongoing</option>
+          <option value= 'over' > Over</option> </select> <br>";
+
+    echo "Bid Type <select required name='bid_type'> <option value='{$row[8]}'>Select Bid Type</option>";
+    echo "<option value= 'free' > Free</option>
+          <option value= 'require fee' > Require Fee</option> </select> <br>";
+
     echo "<input type='submit' name='item' value='Edit' > </form>";
   }
   pg_free_result($result);
