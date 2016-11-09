@@ -10,6 +10,27 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
     header("Location: login.php");
   }
 }
+
+if(isset($_POST['bid'])) {
+  $creation_time = pg_escape_string(date('Y-m-d'));
+  $bid_amount = $_POST['bid_amount'];
+  $bidder = $_POST['bidder'];
+  $item_id = $_POST['item_id'];
+
+  $query = "SELECT owner FROM item WHERE ID = '{$item_id}'";
+  $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+  $row = pg_fetch_array($result);
+
+  $owner = $row[0];
+  $status = $_POST['status'];
+
+
+  $query = "INSERT INTO bid
+            VALUES ('{$creation_time}', '{$bid_amount}', '{$bidder}', '{$item_id}', '{$owner}', '{$status}')";
+
+  pg_query($conn, $query) or die (pg_last_error());
+  header("Location: adminIndex.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +77,36 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
 
 <?php
 
-echo "you are adding a loan";
+echo "You are adding a loan";
+echo "<p></p>";
+
+echo "<form control='form' method='post' name='bid' >";
+echo "Bid Amount <input type='text' name='bid_amount' class='form-control'/>";
+echo "Bidder <select required name='bidder'> <option value=''>Select Bidder</option>";
+$query = "SELECT email FROM users";
+$result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+while($row = pg_fetch_array($result)) {
+  echo "<option value= '{$row[0]}' > '{$row[0]}'</option>";
+}
+echo "</select> <br>";
+pg_free_result($result);
+
+echo "Item ID <select required name='item_id'> <option value=''>Select Item ID</option>";
+$query = "SELECT ID FROM item";
+$result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+while($row = pg_fetch_array($result)) {
+  echo "<option value= '{$row[0]}' > '{$row[0]}'</option>";
+}
+echo "</select> <br>";
+pg_free_result($result);
+
+echo "Status <select required name='status'> <option value='pending'>Select Status</option>";
+echo "<option value= 'pending' > Pending</option>
+<option value= 'failure' > Failure</option> 
+<option value= 'success' > Success</option></select> <br>";
+
+echo "<input type='submit' name='bid' value='Add' > </form>";
+
 ?>
 
 

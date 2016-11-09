@@ -73,7 +73,7 @@ if(isset($_POST['item'])) {
 
 <?php
 echo "You are adding an item";
-echo "<br>";
+echo "<p></p>";
 
 echo "<form control='form' method='post' name='item' >";
 echo "Item Name <input type='text' name='item_name' class='form-control'/>";
