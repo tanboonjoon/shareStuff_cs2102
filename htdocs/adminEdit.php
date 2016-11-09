@@ -43,6 +43,22 @@ if(isset($_POST['item'])) {
   header("Location: adminIndex.php");
 }
 
+if(isset($_POST['bid'])) {
+
+  $time = $_POST['creation_time'];
+  $bid = (int) $_POST['bid_amount'];
+  $bidder = $_POST['bidder'];
+  $id = $_POST['item_id'];
+  $owner = $_POST['owner'];
+  $status = $_POST['status'];
+
+  $query = "UPDATE bid
+            SET creation_time = '{$time}', bid_amount = '{$bid}', status = '{$status}'
+            WHERE item_id = '{$id}' AND owner = '{$owner}' AND bidder = '{$bidder}'";
+  pg_query($conn, $query) or die (pg_last_error());
+  header("Location: adminIndex.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +148,26 @@ if ($edit == 0) {
 
 }else if ($edit == 2) {
 
-echo "you are editing bid";
+  echo "You are editing a bid";
+
+  $id = $_GET['id'];
+  $owner = $_GET['owner'];
+  $bidder = $_GET['bidder'];
+  $query = "SELECT * FROM bid WHERE item_id = '{$id}' AND owner = '{$owner}' AND bidder = '{$bidder}'";
+  $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+
+  if($row = pg_fetch_array($result)) {        
+    echo "<form control='form' method='post' name='bid' >";
+    echo "Creation Time <input type='text' name='creation_time' value='{$row[0]}' class='form-control'/>";
+    echo "Bid Amount <input type='text' name='bid_amount' value='{$row[1]}' class='form-control'/>";
+    echo "<input type ='hidden' name ='bidder' value = '{$bidder}' >";
+    echo "<input type ='hidden' name ='item_id' value = '{$id}' >";
+    echo "<input type ='hidden' name ='owner' value = '{$owner}' >";
+    echo "Status <input type='text' name='status' value='{$row[5]}' class='form-control'/>";
+    echo "<input type='submit' name='bid' value='Edit' > </form>";
+  }
+  pg_free_result($result);
+
 }else if ($edit == 3) {
 
   echo "you are editing loan";
