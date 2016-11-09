@@ -246,8 +246,8 @@ if (pg_num_rows($result) == 0) {
     echo "<td> '{$item_id}'</td>";
     echo "<td> '{$owner}'</td>";
     echo "<td> '{$borrower}'</td>";
-    echo "<td> <a href=\"adminEdit.php?id=$itemID&owner=$owner&borrower=$borrower&edit=3\">Edit</a>
-    <br> <a href=\"adminDeleteLoan.php?id=$itemID\">Delete</a>
+    echo "<td> <a href=\"adminEdit.php?id=$item_id&owner=$owner&borrower=$borrower&edit=3\">Edit</a>
+    <br> <a href=\"adminDeleteLoan.php?id=$item_id&owner=$owner&borrower=$borrower\">Delete</a>
   </td>";
     echo "</tr>";
   }
