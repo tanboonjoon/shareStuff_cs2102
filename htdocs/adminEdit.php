@@ -59,6 +59,21 @@ if(isset($_POST['bid'])) {
   header("Location: adminIndex.php");
 }
 
+if(isset($_POST['loan'])) {
+
+  $return = $_POST['return_date'];
+  $borrow = $_POST['borrowed_date'];  
+  $id = $_POST['item_id'];
+  $owner = $_POST['owner'];
+  $borrower = $_POST['borrower'];
+
+  $query = "UPDATE loan
+            SET return_date = '{$return}', borrowed_date = '{$borrow}'
+            WHERE item_id = '{$id}' AND owner = '{$owner}' AND borrower = '{$borrower}'";
+  pg_query($conn, $query) or die (pg_last_error());
+  header("Location: adminIndex.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -170,10 +185,24 @@ if ($edit == 0) {
 
 }else if ($edit == 3) {
 
-  echo "you are editing loan";
+  echo "You are editing a loan";
 
+  $id = $_GET['id'];
+  $owner = $_GET['owner'];
+  $borrower = $_GET['borrower'];
+  $query = "SELECT * FROM loan WHERE item_id = '{$id}' AND owner = '{$owner}' AND borrower = '{$borrower}'";
+  $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
 
-
+  if($row = pg_fetch_array($result)) {        
+    echo "<form control='form' method='post' name='loan' >";
+    echo "Return Date <input type='text' name='return_date' value='{$row[0]}' class='form-control'/>";
+    echo "Borrow Date <input type='text' name='borrowed_date' value='{$row[1]}' class='form-control'/>";    
+    echo "<input type ='hidden' name ='item_id' value = '{$id}' >";
+    echo "<input type ='hidden' name ='owner' value = '{$owner}' >";
+    echo "<input type ='hidden' name ='borrower' value = '{$borrower}' >";
+    echo "<input type='submit' name='loan' value='Edit' > </form>";
+  }
+  pg_free_result($result);
 }
 
 ?>
