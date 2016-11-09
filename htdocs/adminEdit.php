@@ -207,7 +207,12 @@ if ($edit == 0) {
     echo "<input type ='hidden' name ='bidder' value = '{$bidder}' >";
     echo "<input type ='hidden' name ='item_id' value = '{$id}' >";
     echo "<input type ='hidden' name ='owner' value = '{$owner}' >";
-    echo "Status <input type='text' name='status' value='{$row[5]}' class='form-control'/>";
+
+    echo "Status <select required name='status'> <option value='{$row[5]}'>Select Status</option>";
+    echo "<option value= 'pending' > Pending</option>
+          <option value= 'failure' > Failure</option> 
+          <option value= 'success' > Success</option></select> <br>";
+          
     echo "<input type='submit' name='bid' value='Edit' > </form>";
   }
   pg_free_result($result);
