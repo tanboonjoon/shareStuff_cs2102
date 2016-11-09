@@ -25,6 +25,24 @@ if(isset($_POST['users'])) {
   header("Location: adminIndex.php");
 }
 
+if(isset($_POST['item'])) {
+  $id = $_POST['id'];
+  $name = $_POST['item_name'];
+  $owner = $_POST['owner'];
+  $description = $_POST['description'];
+  $cateogry = $_POST['category'];
+  $return = $_POST['return_instruction'];
+  $pickup = $_POST['pickup_instruction'];
+  $status = $_POST['status'];
+  $bidtype = $_POST['bid_type'];
+
+  $query = "UPDATE item
+            SET item_name = '{$name}', description = '{$description}', category = '{$cateogry}', return_instruction = '{$return}', pickup_instruction = '{$pickup}', status = '{$status}', bid_type = '{$bidtype}'
+            WHERE ID = '{$id}' AND owner = '{$owner}'";
+  pg_query($conn, $query) or die (pg_last_error());
+  header("Location: adminIndex.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +89,7 @@ if(isset($_POST['users'])) {
 $edit = (int) $_GET['edit'];
 
 if ($edit == 0) {
+  echo "You are editing a user";
 
   $id = $_GET['id'];
   $query = "SELECT * FROM users WHERE email = '{$id}' ";
@@ -89,8 +108,28 @@ if ($edit == 0) {
   pg_free_result($result);
 
 }else if ($edit == 1) {
+  echo "You are editing an item";
 
-echo "you are editing item";
+  $id = $_GET['id'];
+  $owner = $_GET['owner'];
+  $query = "SELECT * FROM item WHERE ID = '{$id}' AND owner = '{$owner}'";
+  $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+
+  if($row = pg_fetch_array($result)) {        
+    echo "<form control='form' method='post' name='item' >";
+    echo "<input type ='hidden' name ='id' value = '{$id}' >";
+    echo "Item Name <input type='text' name='item_name' value='{$row[1]}' class='form-control'/>";
+    echo "<input type ='hidden' name ='owner' value = '{$owner}' >";
+    echo "Description <input type='text' name='description' value='{$row[3]}' class='form-control'/>";
+    echo "Category <input type='text' name='category' value='{$row[4]}' class='form-control'/>";
+    echo "Return Instruction <input type='text' name='return_instruction' value='{$row[5]}' class='form-control'/>";
+    echo "Pick Up instruction <input type='text' name='pickup_instruction' value='{$row[6]}' class='form-control'/>";
+    echo "Status <input type='text' name='status' value='{$row[7]}' class='form-control'/>";
+    echo "Bid Type <input type='text' name='bid_type' value='{$row[8]}' class='form-control'/>";
+    echo "<input type='submit' name='item' value='Edit' > </form>";
+  }
+  pg_free_result($result);
+
 }else if ($edit == 2) {
 
 echo "you are editing bid";

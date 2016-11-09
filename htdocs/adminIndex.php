@@ -149,7 +149,7 @@ if(pg_num_rows($itemResult) == 0) {
     echo "<td> '{$return}'</td>";
     echo "<td> '{$bidType}'</td>";
     echo "<td> '{$status}'</td>";
-    echo "<td> <a href=\"adminEdit.php?id=$itemID&edit=1\">Edit</a>
+    echo "<td> <a href=\"adminEdit.php?id=$itemID&owner=$owner&edit=1\">Edit</a>
     <br> <a href=\"adminDeleteItem.php?id=$itemID&owner=$owner\">Delete</a>
   </td>";
   echo "</tr>";
