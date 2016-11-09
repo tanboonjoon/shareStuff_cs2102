@@ -78,6 +78,9 @@
                             <label class="radio-inline">
                                 <input type="radio" name="BidType" id="BidType2" value="require fee">require fee
                             </label>
+                            <label class="radio-inline">
+                                <input type="radio" name ="BidType" id="BidType3" value="all">all
+                            </label>
                             <input type="submit" name="formSubmit" value="Search" >
                         </form>
                         <?php
@@ -85,11 +88,23 @@
                         if(isset($_GET['formSubmit'])) 
 
                         {   
+
                             $email = $_SESSION['usr_email'];
+                            $bidTypeAll = $_GET['BidType'];
+
+
                             if(strcasecmp("All", $_GET['Category']) == 0) {
-                                $query =  "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND  bid_type='".$_GET['BidType']."' AND status = 'ongoing' AND owner <> '{$email}'";
-                            } else {
-                                $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND bid_type='".$_GET['BidType']."' AND status = 'ongoing' AND owner <> '{$email}'";
+                                if (strcmp($bidTypeAll, 'all') == 0) {
+                                    $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND status = 'ongoing' AND owner <> '{$email}'";
+                                } else {
+                                    $query =  "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND  bid_type='".$_GET['BidType']."' AND status = 'ongoing' AND owner <> '{$email}'"; 
+                                } 
+                            }else {
+                                if (strcmp($bidTypeAll, 'all') == 0 ) {
+                                    $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND status = 'ongoing' AND owner <> '{$email}'";
+                                } else {
+                                    $query = "SELECT * FROM item WHERE item_name like '%".$_GET['Keyword']."%' AND category='".$_GET['Category']."' AND bid_type='".$_GET['BidType']."' AND status = 'ongoing' AND owner <> '{$email}'";
+                                }
                             }
 
                             echo "<b>Search result for your item <br><br>";
@@ -114,24 +129,24 @@
                               echo "<tr>";
                               $arrlength = count($row);
                               $itemId = $row[0];
-                                for ($i = 0; $i < $arrlength; $i++) {
-                                    if($i == 7) {
+                              for ($i = 0; $i < $arrlength; $i++) {
+                                if($i == 7) {
 
-                                    }else {
+                                }else {
                                     echo "<td>" . $row[$i] . "</td>";
 
-                                    }
                                 }
+                            }
                             $free = 'free';
                             $fee = 'require fee';
-                            
+
                             if (strcmp($row[8], $free) == 0)  {
                                 echo "<td> <a href=\"freeItemLoan.php?id=$itemId\">Borrow</a> </td>"; 
                             } else {
                                 $query = "SELECT *
-                                          FROM bid
-                                          WHERE bidder = '" . $_SESSION['usr_email'] . "'
-                                          AND item_id = '{$itemId}'";
+                                FROM bid
+                                WHERE bidder = '" . $_SESSION['usr_email'] . "'
+                                AND item_id = '{$itemId}'";
                                 $bidResult = pg_query($conn, $query);
                                 if(pg_num_rows($bidResult) == 0) {
                                     echo "<td> <a href=\"bidForItem.php?id=$itemId&new=1\">Bid</a> </td>";
@@ -141,7 +156,7 @@
                                 pg_free_result($bidResult);                             
                             }
 
-                            
+
                             echo "</tr>";
                         }
                         echo "</table>";
