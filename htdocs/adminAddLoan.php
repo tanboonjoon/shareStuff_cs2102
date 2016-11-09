@@ -10,6 +10,24 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
     header("Location: login.php");
   }
 }
+
+if(isset($_POST['loan'])) {
+
+  $borrowedTime = pg_escape_string(date('Y-m-d'));
+  $item_id = $_POST['item_id'];
+
+  $query = "SELECT owner FROM item WHERE ID = '{$item_id}'";
+  $result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+  $row = pg_fetch_array($result);
+  $owner = $row[0];
+
+  $borrower = $_POST['borrower'];
+  
+  $query = "INSERT INTO loan(borrowed_date, item_id, owner, borrower)
+            VALUES('{$borrowedTime}', '{$item_id}', '{$owner}','{$borrower}')";
+  pg_query($conn, $query) or die (pg_last_error());
+  header("Location: adminIndex.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,8 +73,30 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
 </nav>
 
 <?php
+echo "You are adding a loan";
+echo "<p></p>";
 
-echo "you are adding a loan";
+echo "<form control='form' method='post' name='loan' >";
+
+echo "Item ID <select required name='item_id'> <option value=''>Select Item ID</option>";
+$query = "SELECT ID FROM item";
+$result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+while($row = pg_fetch_array($result)) {
+  echo "<option value= '{$row[0]}' > '{$row[0]}'</option>";
+}
+echo "</select> <br>";
+pg_free_result($result);
+
+echo "Borrower <select required name='borrower'> <option value=''>Select Borrower</option>";
+$query = "SELECT email FROM users";
+$result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+while($row = pg_fetch_array($result)) {
+  echo "<option value= '{$row[0]}' > '{$row[0]}'</option>";
+}
+echo "</select> <br>";
+pg_free_result($result);
+
+echo "<input type='submit' name='loan' value='Add' > </form>";
 ?>
 
 

@@ -77,7 +77,7 @@ if(isset($_POST['bid'])) {
 
 <?php
 
-echo "You are adding a loan";
+echo "You are adding a bid";
 echo "<p></p>";
 
 echo "<form control='form' method='post' name='bid' >";
