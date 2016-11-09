@@ -103,8 +103,10 @@ if(isset($_POST['loan'])) {
     <?php if (isset($_SESSION['usr_email'])) { ?>
       <li><p class="navbar-text">Signed in as <?php echo $_SESSION['usr_name']; ?> </p></li>
       <li><a href="logout.php">Log Out</a></li>
+      <li><a href="adminIndex.php">Home</a></li>
       <li><a href="adminAddUser.php">Add User</a></li>
       <li><a href="adminAddItem.php">Add Item </a></li>
+      <li><a href="adminAddBid.php">Add Bid </a></li>
        <li><a href="adminAddLoan.php">Add Loan </a></li>
       <?php } else { ?>
         <li><a href="login.php">Log In</a></li>
@@ -131,9 +133,14 @@ if ($edit == 0) {
     echo "<input type ='hidden' name ='id' value = '{$id}' >";
     echo "Email <input type='text' name='email' value='{$row[0]}' class='form-control'/>";
     echo "Name <input type='text' name='name' value='{$row[1]}' class='form-control'/>";
-    echo "<label for='password'>Password</label>";
-    echo "<input type='text' name='password' value='{$row[2]}' class='form-control'/>";
-    echo "Is Admin <input type='text' name='isAdmin' value='{$row[3]}' class='form-control'/>";
+    echo "Password <input type='text' name='password' value='{$row[2]}' class='form-control'/>";
+    echo "Is Admin <select required name='isAdmin'> <option value='{$row[3]}'>'{$row[3]}'</option>";
+    if ($row[3] == 't') {
+      echo "<option value= 'false' > 'f'</option>";
+    } else {
+      echo "<option value= 'true' > 't'</option>";
+    }
+    echo "</select> <br>";
     echo "<input type='submit' name='users' value='Edit' > </form>";
   }
   pg_free_result($result);
