@@ -30,7 +30,7 @@ if(isset($_POST['adduser'])) {
   $result = pg_query($conn, $query);
 
   if(!$result) {
-    $failure = "Email already exist :(";
+    $failure = "INAVLID OR DUPLICATE EMAIL!";
   } else {
     $success = "Account created! <a href='adminIndex.php'>go back to index page</a>";
   }
@@ -65,8 +65,10 @@ if(isset($_POST['adduser'])) {
     <?php if (isset($_SESSION['usr_email'])) { ?>
       <li><p class="navbar-text">Signed in as <?php echo $_SESSION['usr_name']; ?> </p></li>
       <li><a href="logout.php">Log Out</a></li>
+      <li><a href="adminIndex.php">Home</a></li>
       <li><a href="adminAddUser.php">Add User</a></li>
       <li><a href="adminAddItem.php">Add Item </a></li>
+      <li><a href="adminAddBidphp">Add Bid </a></li>
       <li><a href="adminAddLoan.php">Add Loan </a></li>
       <?php } else { ?>
         <li><a href="login.php">Log In</a></li>
@@ -95,7 +97,6 @@ if(isset($_POST['adduser'])) {
 </form>
 <span class="text-success"><?php if(isset($success)) { echo $success;} ?></span>
 <span class="text-danger"><?php if(isset($failure)) { echo $failure;} ?></span>
-<a href="adminIndex.php">Go Back to homepage </a>
 
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.min.js"></script>

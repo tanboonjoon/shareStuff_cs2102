@@ -41,6 +41,7 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
       <li><a href="logout.php">Log Out</a></li>
       <li><a href="adminAddUser.php">Add User</a></li>
       <li><a href="adminAddItem.php">Add Item </a></li>
+      <li><a href="adminAddBid.php">Add Bid </a></li>
       <li><a href="adminAddLoan.php">Add Loan </a></li>
       <?php } else { ?>
         <li><a href="login.php">Log In</a></li>
