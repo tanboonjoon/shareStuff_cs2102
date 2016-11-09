@@ -10,6 +10,23 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
     header("Location: login.php");
   }
 }
+
+if(isset($_POST['item'])) {
+  $item_name = $_POST['item_name'];
+  $owner = $_POST['owner'];
+  $description = $_POST['description'];
+  $category = $_POST['category'];
+  $return_instruction = $_POST['return_instruction'];
+  $pickup_instruction = $_POST['pickup_instruction'];
+  $bid_type = $_POST['bid_type'];
+
+
+  $query = "INSERT INTO item(item_name, owner, description, category, return_instruction, pickup_instruction, bid_type)
+            VALUES ('{$item_name}', '{$owner}', '{$description}', '{$category}', '{$return_instruction}', '{$pickup_instruction}', '{$bid_type}')";
+
+  pg_query($conn, $query) or die (pg_last_error());
+  header("Location: adminIndex.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,8 +72,45 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == false) {
 </nav>
 
 <?php
+echo "You are adding an item";
+echo "<br>";
 
-echo "you are adding a item";
+echo "<form control='form' method='post' name='item' >";
+echo "Item Name <input type='text' name='item_name' class='form-control'/>";
+echo "Owner <select required name='owner'> <option value=''>Select Owner</option>";
+$query = "SELECT email FROM users";
+$result = pg_query($conn, $query) or die("Query Failed: '{pg_last_error()}'");
+while($row = pg_fetch_array($result)) {
+  echo "<option value= '{$row[0]}' > '{$row[0]}'</option>";
+}
+echo "</select> <br>";
+pg_free_result($result);
+
+echo "Description <input type='text' name='description' class='form-control'/>";
+
+echo "Category <select required name='category'> <option value=''>Select Category</option>";
+echo "<option value= 'Tools & Gardening' > Tools & Gardening</option>
+<option value= 'Sport & Outdoors' > Sport & Outdoors</option>
+<option value= 'Parties & Events' > Parties & Events</option>
+<option value= 'Apparel & Accessories' > Apparel & Accessories</option>
+<option value= 'Kids & Baby' > Kids & Baby</option>
+<option value= 'Electronic' > Electronic</option>
+<option value= 'Movies, Music, Book & Games' > Movies, Music, Book & Games</option>
+<option value= 'Motor Vehicles' >Motor Vehicles </option>
+<option value= 'Arts and Crafts' >Arts and Crafts </option>
+<option value= 'Home & Appliances' > Home & Appliances</option>
+<option value= 'Office & Education' > Office & Education</option>
+<option value= 'Spaces & Venues' > Spaces & Venues</option>
+<option value= 'Other' > Other</option> </select> <br>";
+
+echo "Return Instruction <input type='text' name='return_instruction' class='form-control'/>";
+echo "Pick Up Instruction <input type='text' name='pickup_instruction' class='form-control'/>";
+
+echo "Bid Type <select required name='bid_type'> <option value=''>Select Bid Type</option>";
+echo "<option value= 'free' > Free</option>
+<option value= 'require fee' > Require Fee</option> </select> <br>";
+
+echo "<input type='submit' name='item' value='Add' > </form>";
 ?>
 
 
